@@ -14,3 +14,17 @@ const db = mysql.createConnection({
     user: 'root',
     password: '123456',
 })
+
+db.connect((err) => {
+    if(err) {
+        throw err
+    }
+    console.log('Mysql Connected...')
+})
+
+app.use(express.json())
+app.use(cookieParser())
+
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`)
+})
