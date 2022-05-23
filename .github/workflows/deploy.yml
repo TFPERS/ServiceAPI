@@ -47,4 +47,5 @@ jobs:
           script: |
             sudo -s
             cd ServiceAPI
+            sudo docker-compose down
             sudo docker-compose up 
