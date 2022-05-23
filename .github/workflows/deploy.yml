@@ -38,5 +38,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd TFPERS
-            ls -a
+            cd TFPERS/ServiceAPI
+            docker-compose up -d
