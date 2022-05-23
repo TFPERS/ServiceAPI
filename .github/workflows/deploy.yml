@@ -32,6 +32,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Docker Login
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_PASSWORD }}
       - name: Login to VM, build and deploy
         uses: appleboy/ssh-action@master
         with:
@@ -41,5 +47,4 @@ jobs:
           script: |
             sudo -s
             cd ServiceAPI
-            git pull
             docker-compose up -d --build
