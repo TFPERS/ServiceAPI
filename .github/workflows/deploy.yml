@@ -40,4 +40,5 @@ jobs:
           script: |
             cd /TFPERS/ServiceAPI
             sudo -s
+            ls -a
             docker-compose up -d
