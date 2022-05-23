@@ -1,12 +1,13 @@
 FROM node:16-alpine
 
-RUN mkdir -p /usr/app/
-WORKDIR /usr/app
+WORKDIR /tfpers-api
 
-#copy from to
-COPY ./ ./
+COPY package.json .
 
 RUN npm install
 
-EXPOSE 8080
-CMD ["npm", "start"]
+COPY . .
+
+EXPOSE 5000
+
+CMD npm start

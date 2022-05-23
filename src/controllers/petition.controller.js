@@ -51,7 +51,9 @@ exports.petitionById = async (req, res) => {
             }, {
                 model: Agency
             }],
-            attributes: { exclude: ['studentId', 'agencyId'] }
+            attributes: { exclude: ['studentId', 'agencyId'] },
+            limit:4,
+            offset:0
         })
         res.status(200).send(petitionById)
     } catch (err) {
