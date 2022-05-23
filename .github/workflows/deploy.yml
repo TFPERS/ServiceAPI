@@ -37,6 +37,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd App-Production
+            cd ServiceAPI
             git pull
             docker-compose up -d --build
