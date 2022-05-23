@@ -35,7 +35,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.TFPERS_SECRET }}
+          password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
             cd TFPERS
