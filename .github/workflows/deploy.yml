@@ -40,4 +40,4 @@ jobs:
             cd ServiceAPI
             sudo git pull
             sudo docker stop backend
-            sudo docker-compose up -d
+            sudo docker-compose up -d --build
