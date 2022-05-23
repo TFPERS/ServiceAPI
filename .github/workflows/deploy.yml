@@ -36,8 +36,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          # port: ${{ secrets.PORT }}
+          key: ${{ secrets.TFPERS_SECRET }}
+          port: 22
           script: |
-            echo ${{ secrets.GHCR_PASSWORD }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            docker rmi -f ghcr.io/tfpers/tfpers-service:dev
-            docker pull ghcr.io/tfpers/tfpers-service:dev
+            cd TFPERS
+            ls -a
