@@ -38,8 +38,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            source: "*"
-            target: "/TFPERS/ServiceAPI"
+            cd ServiceAPI
             sudo -s
             ls -a
             docker-compose up -d
