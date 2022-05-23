@@ -30,6 +30,8 @@ jobs:
     # needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Login to VM, build and deploy
         uses: appleboy/ssh-action@master
         with:
@@ -37,6 +39,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
+            sudo -s
             cd ServiceAPI
             git pull
             docker-compose up -d --build
