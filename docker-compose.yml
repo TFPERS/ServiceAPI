@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     image: mysql/mysql-server:8.0.24
-    container_name: database
+    container_name: db
     environment:
       - MYSQL_ROOT_PASSWORD=MySQL
       - MYSQL_USER=admin
