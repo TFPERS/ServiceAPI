@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd APPILCATION
+            cd /APPILCATION && docker-compose up -d
             sudo -s
             ls -a
             docker-compose up -d
