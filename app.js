@@ -12,14 +12,15 @@ const db = require('./src/models')
 const PORT = process.env.NODE_DOCKER_PORT || 5000;
 app.use(cors({ origin: '*' }))
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }))
 // Body parse middleware
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+
 app.use(function(req, res, next) {
     res.header(
         "Access-Control-Allow-Headers",
