@@ -7,5 +7,6 @@ const router = express.Router()
 router.post('/form', controller.petitionForm)
 router.get('/', controller.petitionAll)
 router.get('/me/:id', controller.petitionById)
+router.get('/test',controller.petitionAll)
 
 module.exports = router
