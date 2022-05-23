@@ -39,4 +39,5 @@ jobs:
           port: 22
           script: |
             cd /TFPERS/ServiceAPI
+            sudo -s
             docker-compose up -d
