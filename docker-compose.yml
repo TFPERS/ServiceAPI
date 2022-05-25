@@ -8,6 +8,8 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=123456
       - MYSQL_DATABASE=mydbapp
+    volumes:
+      - mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
 
@@ -25,3 +27,6 @@ services:
       - "5000:5000"
     depends_on:
       - db
+
+volumes:
+  mysql-data
