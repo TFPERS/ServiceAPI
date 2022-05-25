@@ -35,12 +35,12 @@ checkStudentDuplicateIdOrEmail = async (req, res, next) => {
   let student
   student = await Student.findOne({ where: { id: req.body.id } })
   if (student) {
-    res.status(400).send({ message: "Failed! StudentId is already in use!" })
+    res.status(400).send({ message: "ผิดพลาด รหัสนักศึกษานี้ถูกใช้ไปแล้ว" })
     return
   }
   student = await Student.findOne({ where: { email: req.body.email }})
   if (student) {
-    res.status(400).send({ message: "Failed! Email is already in use!" })
+    res.status(400).send({ message: "ผิดพลาด อีเมลนี้ถูกใช้ไปแล้ว" })
     return
   } 
   next()

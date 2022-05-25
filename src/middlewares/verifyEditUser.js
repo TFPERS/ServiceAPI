@@ -11,7 +11,7 @@ checkEmailExists = async(req, res, next) => {
     } else {
         const email = await Student.findOne({ where: { email: req.body.email } })
         if (email) {
-            res.status(400).send({ message: "Failed! Email is already in use!" })
+            res.status(400).send({ message: "อีเมลนี้มีผู้ใช้แล้ว" })
         }
         next()
     }
