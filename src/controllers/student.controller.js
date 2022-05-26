@@ -35,6 +35,7 @@ exports.signin = async (req, res) => {
         user = await Student.findOne({ where:{ id: user.id }, attributes: { exclude: 'password' } })
         res
         .status(200).send({
+            message: 'เข้าสู่ระบบเรียบร้อย',
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
