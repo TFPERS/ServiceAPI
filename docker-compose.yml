@@ -3,6 +3,7 @@ services:
   db:
     image: mysql/mysql-server:8.0.24
     container_name: db
+    restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=MySQL
       - MYSQL_USER=admin
