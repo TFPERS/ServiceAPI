@@ -1,4 +1,8 @@
 version: '3'
+
+networks:
+  name: api-service_server
+
 services:
   db:
     image: mysql/mysql-server:8.0.24
@@ -9,6 +13,8 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=123456
       - MYSQL_DATABASE=mydbapp
+    networks:
+      - api-service_server
     ports:
       - "3306:3306"
     volumes:
@@ -28,5 +34,7 @@ services:
       - "5000:5000"
     depends_on:
       - db
+    networks:
+      - api-service_server
 volumes:
   tfpersData:
