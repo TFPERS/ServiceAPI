@@ -38,7 +38,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             sudo echo ${{ secrets.GITHUB_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            sudo docker pull ghcr.io/tfpers/tfpers-service:dev
+            # sudo docker pull ghcr.io/tfpers/tfpers-service:dev
             # cd ServiceAPI
             # sudo git pull
             # sudo docker-compose up -d --build
