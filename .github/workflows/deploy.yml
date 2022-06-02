@@ -19,12 +19,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN  }}
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v3.0.0
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/tfpers/tfpers-service:dev
+      # - name: Build and push Docker images
+      #   uses: docker/build-push-action@v3.0.0
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ghcr.io/tfpers/tfpers-service:dev
 
   deploy:
     needs: build
@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            sudo echo ${{ secrets.GITHUB_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            sudo echo ${{ secrets.GHCR  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             sudo docker pull ghcr.io/tfpers/tfpers-service:dev
             # cd ServiceAPI
             # sudo git pull
