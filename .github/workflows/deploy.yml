@@ -17,7 +17,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR }}
+          password: ${{ secrets.GITHUB_TOKEN  }}
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.0.0
@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            echo ${{ secrets.GHCR }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            echo ${{ secrets.GITHUB_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             sudo docker pull ghcr.io/tfpers/tfpers-service:dev
             # cd ServiceAPI
             # sudo git pull
