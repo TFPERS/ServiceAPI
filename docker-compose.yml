@@ -21,7 +21,8 @@ services:
       - tfpersData:/var/lib/mysql
 
   tfpers-api:
-    build: .
+    # build: .
+    image: ghcr.io/tfpers/tfpers-service:dev
     container_name: backend
     restart: on-failure
     environment:
