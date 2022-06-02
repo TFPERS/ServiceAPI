@@ -30,7 +30,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Login to VM, build and deploy
+      - name: Login to VM build and deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
