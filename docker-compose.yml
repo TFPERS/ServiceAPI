@@ -10,11 +10,6 @@ services:
     restart: on-failure
     env_file:
       - ./.env.develop
-    # environment:
-    #   - MYSQL_ROOT_PASSWORD=MySQL
-    #   - MYSQL_USER=admin
-    #   - MYSQL_PASSWORD=123456
-    #   - MYSQL_DATABASE=mydbapp
     networks:
       - api_service
     ports:
@@ -29,14 +24,6 @@ services:
     restart: on-failure
     env_file:
       - ./.env.develop
-    # environment:
-    #   - DB_HOST=db
-    #   - DB_USER=admin
-    #   - DB_PASSWORD=123456
-    #   - DB_NAME=mydbapp
-    #   - DB_PORT=3306
-    ports:
-      - "5000:5000"
     depends_on:
       - db
     networks:
