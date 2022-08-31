@@ -6,14 +6,13 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             primaryKey: true,
         },
+        subject: {
+            type: Sequelize.STRING,
+        },
         description: {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        isActive: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: true
-        }
     })
 return notification
 }

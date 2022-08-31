@@ -38,6 +38,7 @@ app.use('/api/student', require('./src/routes/api/student.routes'))
 app.use('/api/test', require('./src/routes/api/user.routes'))
 app.use('/api/petition', require('./src/routes/api/petition.routes'))
 app.use('/api/agency', require('./src/routes/api/agency.routes'))
+app.use('/api/notification', require('./src/routes/api/notification.routes'))
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)

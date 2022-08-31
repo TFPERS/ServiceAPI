@@ -64,7 +64,10 @@ exports.petitionPaginate = async (req, res) => {
             limit: size,
             offset: page * size
         })
-        return res.status(200).send(petition)
+        return res.status(200).send({
+            content: petition.rows,
+            totalPages: Math.ceil(petition.count / size)
+        })
     } catch (err) {
         res.status(500).send({ message: err.message })
     }

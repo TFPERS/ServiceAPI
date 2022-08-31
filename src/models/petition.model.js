@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
     description: {
       type: Sequelize.STRING,
       allowNull: false,
+    },
+    file: {
+      type: Sequelize.STRING,
+      allowNull: true,
     }
   });
   return Petition
