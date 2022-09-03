@@ -7,15 +7,45 @@ const StudentNotification = db.StudentNotification
 
 exports.notificationEachStudent = async (req, res) => {
     try {
-    const studentId = Number.parseInt(req.query.studentId)
-    const studentNotification = await StudentNotification.find({
+    const studentId = req.params.studentId
+    console.log(`studentId`, studentId)
+    const studentNotification = await StudentNotification.findAll({
         where: {studentId: studentId},
+        include: {
+            model: Notification,
+            attributes: { exclude: ['createdAt', 'updatedAt', 'agencyId'] },
+            include: {
+                model: Agency,
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+        },
+        attributes: {exclude: ['notificationId']},
     })
-    res.send(studentNotification)
+    const isRead = studentNotification.every((noti) => {
+        return noti.is_read === true
+    })
+    res.send({
+        isRead: isRead,
+        studentNotification
+    })
     } catch (err) {
         res.status(500).send({ message: err.message })
     }
 }
+
+exports.notificationReadingAlready = async (req, res) => {
+    try {
+        const studentId = req.params.studentId
+        StudentNotification.update(
+            { is_read: 1},
+            { where: { studentId: studentId}}
+        )
+        res.status(200).send({ message: 'Update success' })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
 exports.notificationAll = async (req, res) => {
     try {
     const studentNotification = await StudentNotification.findAll()

@@ -28,7 +28,7 @@ exports.signin = async (req, res) => {
         let user
         user = await Student.findOne({ where:{ id: req.body.username } })
         if (!user) user = await Student.findOne({ where:{ email: req.body.username } })
-        if (!user) return res.status(404).send({ message: 'Username or Password Wrong' })
+        if (!user) return res.status(404).send({accessToken: null, message: "Username or Password Wrong"})
         const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
         if (!passwordIsValid) return res.status(401).send({accessToken: null, message: "Username or Password Wrong"})
         const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 })

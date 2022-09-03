@@ -39,5 +39,9 @@ db.student.belongsToMany(db.notification, {
 db.notification.belongsToMany(db.student, {
     through:db.StudentNotification
 })
+db.student.hasMany(db.StudentNotification)
+db.StudentNotification.belongsTo(db.student)
+db.notification.hasMany(db.StudentNotification)
+db.StudentNotification.belongsTo(db.notification)
 
 module.exports = db;

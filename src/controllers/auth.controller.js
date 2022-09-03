@@ -81,3 +81,11 @@ exports.signin = async (req, res) => {
     res.status(500).send({ message: err.message })
   }
 }
+
+exports.signInAgency = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
