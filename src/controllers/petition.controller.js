@@ -21,6 +21,20 @@ exports.petitionForm = async (req, res) => {
     }
 }
 
+exports.petitionUpdateStatus = async (req, res) => {
+    try {
+        const petitionId = Number.parseInt(req.params.id)
+        const status = req.body.status
+        Petition.update(
+            { status: status },
+            { where: {id: petitionId } }
+        )
+        res.status(200).send({ message: 'Update Status Petition Success' })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
 exports.petitionAll = async (req, res) => {
     try {
         const allPetition = await Petition.findAll({ 
