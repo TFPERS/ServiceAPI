@@ -125,7 +125,7 @@ exports.testFindSearch = async (req, res) => {
 
         let page = 0;
         if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-            page = pageAsNumber
+            page = pageAsNumber;
         }
         let size = 10
         if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
