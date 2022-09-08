@@ -15,7 +15,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - tfpersData:/var/lib/mysql
+      - tfpersDatabase:/var/lib/mysql
 
   tfpers-api:
     # build: .
@@ -29,4 +29,4 @@ services:
     networks:
       - api_service
 volumes:
-  tfpersData:
+  tfpersDatabase:
