@@ -28,7 +28,9 @@ app.use(function(req, res, next) {
         )
         next()
     })
-db.sequelize.sync();
+db.sequelize.sync({
+    force: true
+});
 app.use(morgan("dev"))
 // global error handler
 app.use(errorHandler)
