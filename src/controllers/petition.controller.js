@@ -5,6 +5,7 @@ const Agency = db.agency
 const config = require('../config/auth.config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { Op } = require('sequelize')
 
 exports.petitionForm = async (req, res) => {
     try {
@@ -57,6 +58,7 @@ exports.petitionPaginate = async (req, res) => {
     try {
         const pageAsNumber = Number.parseInt(req.query.page)
         const sizeAsNumber = Number.parseInt(req.query.size)
+        const search = req.query.search
 
         let page = 0;
         if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
@@ -76,7 +78,34 @@ exports.petitionPaginate = async (req, res) => {
             }],
             attributes: { exclude: ['studentId', 'agencyId'] },
             limit: size,
-            offset: page * size
+            offset: page * size,
+            where: {
+                [Op.or]: [
+                    {
+                        id: {
+                            [Op.like]: `${Number.parseInt(search)}`
+                        }
+                    }, 
+                    {
+                        type: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        studentId: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        status: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    // {
+                    //     createdAt: search
+                    // }
+                ]
+            },  
         })
         return res.status(200).send({
             content: petition.rows,
@@ -87,10 +116,61 @@ exports.petitionPaginate = async (req, res) => {
     }
 }
 
-exports.petitionById = async (req, res) => {
+exports.testFindSearch = async (req, res) => {
     try {
         const pageAsNumber = Number.parseInt(req.query.page)
         const sizeAsNumber = Number.parseInt(req.query.size)
+        const search = req.query.search
+        console.log("search " +search)
+
+        let page = 0;
+        if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+            page = pageAsNumber
+        }
+        let size = 10
+        if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+            size = sizeAsNumber
+        }
+        
+        const petition = await Petition.findAndCountAll({
+            include: [{
+                model: Student,
+                attributes: { exclude: 'password' }
+            }, {
+                model: Agency
+            }],
+            attributes: { exclude: ['studentId', 'agencyId'] },
+            limit: size,
+            offset: page * size,
+            where: {
+                [Op.or]: [
+                    {
+                        type: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        createdAt: {
+                            [Op.like]: `%${new Date(search)}`
+                        }
+                    }
+                ]
+            },  
+        })
+        return res.status(200).send({
+            content: petition.rows,
+            totalPages: Math.ceil(petition.count / size)
+        })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.petitionByStudentId = async (req, res) => {
+    try {
+        const pageAsNumber = Number.parseInt(req.query.page)
+        const sizeAsNumber = Number.parseInt(req.query.size)
+        const search = req.query.search
         let page = 0;
         if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
             page = pageAsNumber
@@ -100,9 +180,6 @@ exports.petitionById = async (req, res) => {
             size = sizeAsNumber
         }
         const petitionById = await Petition.findAndCountAll({
-            where: {
-                studentId: req.params.id
-            },
             include: [{
                 model: Student,
                 attributes: { exclude: 'password' }
@@ -111,7 +188,37 @@ exports.petitionById = async (req, res) => {
             }],
             attributes: { exclude: ['studentId', 'agencyId'] },
             limit: size,
-            offset: page * size
+            offset: page * size,
+            where: {
+                [Op.and]: [
+                    { studentId: req.params.id },
+                    {[Op.or]: [
+                        {
+                            id: {
+                                [Op.like]: `${Number.parseInt(search)}`
+                            }
+                        }, 
+                        {
+                            type: {
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            studentId: {
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            status: {
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        // {
+                        //     createdAt: search
+                        // }
+                    ]}  
+                ]
+            },  
         })
         res.status(200).send({
             content: petitionById.rows,

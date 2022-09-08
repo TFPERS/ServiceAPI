@@ -5,6 +5,7 @@ const Agency = db.agency
 const config = require('../config/auth.config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const StatusPetition = require('../enum/StatusPetition')
 
 exports.numberOfStudent = async (req,res) => {
     try {
@@ -17,9 +18,6 @@ exports.numberOfStudent = async (req,res) => {
 exports.numberOfRequest = async (req, res) => {
     try {
         const numberOfRequestPending = await Petition.count({
-            where: {
-                status: 'pending'
-            }
         })
         return res.status(200).send({numberOfRequestPending})
     } catch (err) {
@@ -30,7 +28,7 @@ exports.numberOfRequestSuccess = async (req, res) => {
     try {
         const numberOfRequestSuccess = await Petition.count({
             where: {
-                status: 'success'
+                status: StatusPetition.Done
             }
         })
         return res.status(200).send({numberOfRequestSuccess})
