@@ -19,6 +19,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
 // Body parse middleware
 
 app.use(function(req, res, next) {
@@ -28,6 +29,8 @@ app.use(function(req, res, next) {
         )
         next()
     })
+
+
 db.sequelize.sync({
     // force: true
 });
@@ -42,8 +45,20 @@ app.use('/api/petition', require('./src/routes/api/petition.routes'))
 app.use('/api/agency', require('./src/routes/api/agency.routes'))
 app.use('/api/notification', require('./src/routes/api/notification.routes'))
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
 })
 
+const io = require('socket.io')(server, {
+    cors: {
+        origin: process.env.CLIENT_ORIGIN,
+    }
+})
 
+io.on("connection", (socket) => {
+    console.log('connected to socket.io')
+
+    socket.on('send_noti', () => {
+        io.emit("receive_noti")
+    })
+})
