@@ -10,7 +10,8 @@ const errorHandler = require('./src/middlewares/error-handler')
 const db = require('./src/models')
 // routes
 const PORT = process.env.NODE_DOCKER_PORT || 5000;
-app.use(cors({ origin: '*' }))
+app.use(cors({ origin: process.env.CLIENT_ORIGIN,
+credentials: true }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -50,8 +51,10 @@ const server = app.listen(PORT, () => {
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: '*'
-    }
+        origin: process.env.CLIENT_ORIGIN,
+        credentials: true
+    },
+    secure: true
 })
 
 io.on("connection", (socket) => {
