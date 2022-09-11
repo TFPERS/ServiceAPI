@@ -32,7 +32,6 @@ app.use(function(req, res, next) {
 
 
 db.sequelize.sync({
-    force: true
 });
 app.use(morgan("dev"))
 // global error handler
@@ -52,6 +51,8 @@ const server = app.listen(PORT, () => {
 const io = require('socket.io')(server, {
     cors: {
         origin: process.env.CLIENT_ORIGIN,
+        method: ["GET", "POST"],
+        credentials: true
     }
 })
 
