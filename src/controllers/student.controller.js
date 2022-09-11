@@ -28,9 +28,9 @@ exports.signin = async (req, res) => {
         let user
         user = await Student.findOne({ where:{ id: req.body.username } })
         if (!user) user = await Student.findOne({ where:{ email: req.body.username } })
-        if (!user) return res.status(404).send({accessToken: null, message: "Username or Password Wrong"})
+        if (!user) return res.status(404).send({accessToken: null, message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"})
         const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
-        if (!passwordIsValid) return res.status(401).send({accessToken: null, message: "Username or Password Wrong"})
+        if (!passwordIsValid) return res.status(401).send({accessToken: null, message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"})
         const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: 86400 })
         user = await Student.findOne({ where:{ id: user.id }, attributes: { exclude: 'password' } })
         res
@@ -61,7 +61,6 @@ exports.studentById = async (req, res) => {
             attributes : { exclude: 'password'}
         })
         if (!studentById) res.status(404).send({ message: 'User not found' })
-        console.log(studentById)
         res.status(200).send(studentById)
     } catch (err) {
         res.status(500).send({ message: err.message })

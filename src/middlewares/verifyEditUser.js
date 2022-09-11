@@ -19,29 +19,25 @@ checkEmailExists = async(req, res, next) => {
 
 checkFieldIsEmpty = (req, res, next) => {
     if (req.body.firstname === "") {
-        res.status(500).send({ message: "Please fill firstname" })
+        res.status(500).send({ message: "กรุณาใส่ชื่อจริง" })
         return
     }
     if (req.body.lastname === "") {
-        res.status(500).send({ message: "Please fill lastname" })
+        res.status(500).send({ message: "กรุณาใส่นามสกุล" })
         return
     }
     if (req.body.email === "") {
-        res.status(500).send({ message: "Please fill email" })
+        res.status(500).send({ message: "กรุณาใส่ชื่ออีเมล" })
         return
     }
     if (req.body.major === "") {
-        res.status(500).send({ message: "Please fill major" })
+        res.status(500).send({ message: "กรุณาใส่ชื่อคณะ" })
         return
     }
     if (req.body.faculty === "") {
-        res.status(500).send({ message: "Please fill faculty" })
+        res.status(500).send({ message: "กรุณาใส่ชื่อสาขา" })
         return
     }
-    // if (req.body.telephone === "") {
-    //     res.status(500).send({ message: "Please fill telephone" })
-    //     return
-    // }
     next()
 }
 

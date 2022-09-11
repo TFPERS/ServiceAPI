@@ -47,7 +47,7 @@ exports.signup = async (req, res) => {
     })
         res.send({ message: "Agency was registered successfully!" })
     } catch (err) {
-        res.status(500).send({ message: err.message })
+        res.status(500).send({ message: err.errors[0].message })
     }
 }
 exports.signIn = async (req, res) => {
@@ -69,7 +69,7 @@ exports.signIn = async (req, res) => {
         accessToken: token,
         role: 'agency'
       })
-    } catch (error) {
+    } catch (err) {
         res.status(500).send({ message: err.message })
     }
   }

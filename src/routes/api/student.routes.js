@@ -5,9 +5,9 @@ const router = express.Router()
 
 router.get('/me/:id', controller.studentById)
 router.put('/update/:id', [
+            authJwt.verifyToken,
             verifyEditUser.checkEmailExists,
             verifyEditUser.checkFieldIsEmpty,
-            authJwt.verifyToken
         ]
         ,controller.studentUpdate)
 module.exports = router

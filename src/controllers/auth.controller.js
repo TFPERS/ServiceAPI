@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
         return res.send({ message: "User was registered successfully!" });
       })
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 }
