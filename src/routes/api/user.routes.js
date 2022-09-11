@@ -9,7 +9,7 @@ router.get('/mod', [authJwt.verifyToken, authJwt.isModerator], controller.modera
 router.get('/admin', [authJwt.verifyToken, authJwt.isAdmin], controller.adminBoard)
 router.get('/getAllUser', controller.allUser)
 
-module.exports = router;
+module.exports = router
 
 // module.exports = function(app) {
 //     app.use(function(req, res, next) {
