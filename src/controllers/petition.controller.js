@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
 
+
 exports.petitionForm = async (req, res) => {
     try {
     if (!req.body.description) return res.status(500).send({ message: "Please add description" })
@@ -224,6 +225,48 @@ exports.petitionByStudentId = async (req, res) => {
             content: petitionById.rows,
             totalPages: Math.ceil(petitionById.count / size)
         })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.downloadRO01 = async (req, res) => {
+    try {
+      res.download('../ServiceAPI/Files/RO-01.pdf', (err) => {
+        if(err) {
+            console.log(err)
+        }
+      })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+exports.downloadRO03 = async (req, res) => {
+    try {
+      res.download('../ServiceAPI/Files/RO-03.pdf', (err) => {
+        if(err) {
+            console.log(err)
+        }
+      })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.waiverfee = async (req,res) => {
+    try {
+        // console.log(req.files)
+        console.log(JSON.parse(req.body.data))
+        const { type, status, description, studentId } = JSON.parse(req.body.data)
+        console.log(type, status, description, studentId)
+    // const petition = await Petition.create({
+    //     type: req.body.type,
+    //     status: req.body.status,
+    //     description: req.body.description,
+    //     studentId: req.body.studentId
+    // })
+    // res.send({ message: "add was registered successfully!" })
+    //     res.json({ message: "Successfully uploaded files" });
     } catch (err) {
         res.status(500).send({ message: err.message })
     }

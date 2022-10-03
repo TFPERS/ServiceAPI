@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const errorHandler = require('./src/middlewares/error-handler')
 const db = require('./src/models')
+const multer = require('multer')
+const upload = multer ({dest: "uploads/"})
 // routes
 const PORT = process.env.NODE_DOCKER_PORT || 5000;
 app.use(cors({ origin: process.env.CLIENT_ORIGIN,
