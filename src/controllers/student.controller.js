@@ -15,7 +15,7 @@ exports.signinGoogle = async (req,res) => {
         if (!student) return res.status(400).send({message:"โปรดลงทะเบียนก่อนเพื่อเข้าสู่ระบบโดยใช้อีเมล"})
         const token = jwt.sign({ id: student.id }, config.secret, { expiresIn: 86400 })
         const user = await Student.findOne({ where:{ id: student.id }, attributes: { exclude: 'password' } })
-        res
+        return res
         .status(200).send({
             message: 'เข้าสู่ระบบเรียบร้อย',
             id: user.id,
@@ -30,7 +30,7 @@ exports.signinGoogle = async (req,res) => {
             accessToken: token
         })
     } catch (error) {
-        res.status(400).send({ message: error.message })
+        return res.status(400).send({ message: error.message })
     }
 }
 
