@@ -10,6 +10,7 @@ exports.notificationEachStudent = async (req, res) => {
     const studentId = req.params.studentId
     const studentNotification = await StudentNotification.findAll({
         where: {studentId: studentId},
+        order: [['createdAt', 'DESC']],
         include: {
             model: Notification,
             attributes: { exclude: ['createdAt', 'updatedAt', 'agencyId'] },
@@ -47,7 +48,7 @@ exports.notificationReadingAlready = async (req, res) => {
 
 exports.notificationAll = async (req, res) => {
     try {
-    const studentNotification = await StudentNotification.findAll()
+    const studentNotification = await StudentNotification.findAll({ order: [['createdAt', 'DESC']],})
     res.status(200).send(studentNotification)
     } catch (err) {
         res.status(500).send({ message: err.message })
@@ -91,7 +92,8 @@ exports.allNotificationForAgency = async (req, res) => {
                 model: Agency,
                 attributes: { exclude: ['password']}
             },
-            attributes: { exclude: ['agencyId']}
+            order: [['createdAt', 'DESC']],
+            attributes: { exclude: ['agencyId']},
         })
         res.status(200).send(agencyNoti)
     } catch (err) {

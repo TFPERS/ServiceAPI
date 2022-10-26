@@ -5,7 +5,8 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         console.log(file)
-        cb(null, Date.now()+'_'+req.query.studentId+'_'+file.originalname)
+        // console.log(Buffer.from(file.originalname).toString('utf8'))
+        cb(null, Date.now()+'_'+req.query.studentId+'_'+(file.originalname).split(" ").join(""))
     }
 })
 const uploadStorage = multer({ storage: storage })

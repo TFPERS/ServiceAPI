@@ -25,6 +25,7 @@ db.petition = require("../models/petition.model")(sequelize, Sequelize);
 db.agency = require("../models/agency.model")(sequelize, Sequelize);
 db.notification = require("../models/notification.model")(sequelize, Sequelize);
 db.StudentNotification = require("../models/student_notification.model")(sequelize, Sequelize);
+db.file = require("../models/file.model")(sequelize, Sequelize)
 
 db.agency.hasMany(db.notification)
 db.notification.belongsTo(db.agency)
@@ -32,6 +33,8 @@ db.student.hasMany(db.petition, { foreignKey: 'studentId' })
 db.petition.belongsTo(db.student, { foreignKey: 'studentId' })
 db.agency.hasMany(db.petition, { foreignKey: 'agencyId' })
 db.petition.belongsTo(db.agency, { foreignKey: 'agencyId' })
+db.petition.hasMany(db.file, { foreignKey: 'petitionId'})
+db.file.belongsTo(db.petition, { foreignKey: 'petitionId'})
 
 db.student.belongsToMany(db.notification, {
     through: db.StudentNotification

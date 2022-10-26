@@ -5,6 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
+const flash = require('express-flash');
 const session = require('express-session')
 const errorHandler = require('./src/middlewares/error-handler')
 const db = require('./src/models')
@@ -22,7 +23,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
-
+app.use(flash());
 // Body parse middleware
 
 app.use(function(req, res, next) {
@@ -35,6 +36,7 @@ app.use(function(req, res, next) {
 
 
 db.sequelize.sync({
+    force: true,
 });
 app.use(morgan("dev"))
 // global error handler
@@ -46,6 +48,7 @@ app.use('/api/test', require('./src/routes/api/user.routes'))
 app.use('/api/petition', require('./src/routes/api/petition.routes'))
 app.use('/api/agency', require('./src/routes/api/agency.routes'))
 app.use('/api/notification', require('./src/routes/api/notification.routes'))
+app.use('/api/file', require('./src/routes/api/file.routes'))
 
 const server = app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)

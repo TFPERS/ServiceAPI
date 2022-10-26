@@ -10,6 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    term: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
     status: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -18,9 +22,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    file: {
+    note: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     }
   });
   return Petition

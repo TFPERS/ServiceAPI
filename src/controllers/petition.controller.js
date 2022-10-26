@@ -6,6 +6,7 @@ const config = require('../config/auth.config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
+const FileDb = db.file
 
 
 exports.petitionForm = async (req, res) => {
@@ -15,7 +16,9 @@ exports.petitionForm = async (req, res) => {
         type: req.body.type,
         status: req.body.status,
         description: req.body.description,
-        studentId: req.body.studentId
+        note: req.body.note,
+        studentId: req.body.studentId,
+        term: req.body.term
     })
     res.send({ message: "add was registered successfully!" })
     } catch (err) {
@@ -23,12 +26,17 @@ exports.petitionForm = async (req, res) => {
     }
 }
 
-exports.petitionUpdateStatus = async (req, res) => {
+exports.petitionUpdate = async (req, res) => {
+    console.log(req.body.note)
     try {
         const petitionId = Number.parseInt(req.params.id)
         const status = req.body.status
+        const note = req.body.note
         Petition.update(
-            { status: status },
+            { 
+              status: status,
+              note: note
+            },
             { where: {id: petitionId } }
         )
         res.status(200).send({ message: 'Update Status Petition Success' })
@@ -76,6 +84,8 @@ exports.petitionPaginate = async (req, res) => {
                 attributes: { exclude: 'password' }
             }, {
                 model: Agency
+            },{
+                model: FileDb
             }],
             attributes: { exclude: ['studentId', 'agencyId'] },
             limit: size,
@@ -102,59 +112,14 @@ exports.petitionPaginate = async (req, res) => {
                             [Op.like]: `%${search}%`
                         }
                     },
-                    // {
-                    //     createdAt: search
-                    // }
-                ]
-            },  
-        })
-        return res.status(200).send({
-            content: petition.rows,
-            totalPages: Math.ceil(petition.count / size)
-        })
-    } catch (err) {
-        res.status(500).send({ message: err.message })
-    }
-}
-
-exports.testFindSearch = async (req, res) => {
-    try {
-        const pageAsNumber = Number.parseInt(req.query.page)
-        const sizeAsNumber = Number.parseInt(req.query.size)
-        const search = req.query.search
-        console.log("search " +search)
-
-        let page = 0;
-        if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-            page = pageAsNumber;
-        }
-        let size = 10
-        if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-            size = sizeAsNumber
-        }
-        
-        const petition = await Petition.findAndCountAll({
-            include: [{
-                model: Student,
-                attributes: { exclude: 'password' }
-            }, {
-                model: Agency
-            }],
-            attributes: { exclude: ['studentId', 'agencyId'] },
-            limit: size,
-            offset: page * size,
-            where: {
-                [Op.or]: [
                     {
-                        type: {
+                        term: {
                             [Op.like]: `%${search}%`
                         }
                     },
-                    {
-                        createdAt: {
-                            [Op.like]: `%${new Date(search)}`
-                        }
-                    }
+                    // {
+                    //     createdAt: search
+                    // }
                 ]
             },  
         })
@@ -186,6 +151,8 @@ exports.petitionByStudentId = async (req, res) => {
                 attributes: { exclude: 'password' }
             }, {
                 model: Agency
+            }, {
+                model: FileDb
             }],
             attributes: { exclude: ['studentId', 'agencyId'] },
             limit: size,
@@ -211,6 +178,11 @@ exports.petitionByStudentId = async (req, res) => {
                         },
                         {
                             status: {
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            term: {
                                 [Op.like]: `%${search}%`
                             }
                         },
@@ -255,18 +227,24 @@ exports.downloadRO03 = async (req, res) => {
 
 exports.waiverfee = async (req,res) => {
     try {
-        // console.log(req.files)
-        console.log(JSON.parse(req.body.data))
-        const { type, status, description, studentId } = JSON.parse(req.body.data)
-        console.log(type, status, description, studentId)
-    // const petition = await Petition.create({
-    //     type: req.body.type,
-    //     status: req.body.status,
-    //     description: req.body.description,
-    //     studentId: req.body.studentId
-    // })
-    // res.send({ message: "add was registered successfully!" })
-    //     res.json({ message: "Successfully uploaded files" });
+        const { type, status, description, studentId, term } = JSON.parse(req.body.data)
+        const petition = await Petition.create({
+            type: type,
+            status: status,
+            description: description,
+            studentId: studentId,
+            note: '',
+            term: term
+        })
+        for(let i = 0; i < req.files.length; i++) {
+            const originalName = req.files[i].originalname
+            FileDb.create({
+                name: req.files[i].filename,
+                originalName: originalName.split(" ").join(""),
+                petitionId: petition.id
+            })
+        }
+    res.send({ message: "add was registered successfully!" })
     } catch (err) {
         res.status(500).send({ message: err.message })
     }

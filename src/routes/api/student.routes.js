@@ -10,4 +10,7 @@ router.put('/update/:id', [
             verifyEditUser.checkFieldIsEmpty,
         ]
         ,controller.studentUpdate)
+router.post('/forgot-password', controller.forgotPassword)
+router.get('/reset-password/:id/:token', controller.verifyUrl)
+router.post('/reset-password/:id/:token', controller.resetPassword)
 module.exports = router
