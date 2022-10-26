@@ -12,7 +12,7 @@ exports.signinGoogle = async (req,res) => {
     try {
         const {email} = req.body
         const student = await Student.findOne({ where:{ email: email }})
-        if (!student) res.status(400).send({message:"โปรดลงทะเบียนก่อนเพื่อเข้าสู่ระบบโดยใช้อีเมล"})
+        if (!student) return res.status(400).send({message:"โปรดลงทะเบียนก่อนเพื่อเข้าสู่ระบบโดยใช้อีเมล"})
         const token = jwt.sign({ id: student.id }, config.secret, { expiresIn: 86400 })
         const user = await Student.findOne({ where:{ id: student.id }, attributes: { exclude: 'password' } })
         res
