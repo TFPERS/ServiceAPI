@@ -13,7 +13,7 @@ exports.notificationEachStudent = async (req, res) => {
         order: [['createdAt', 'DESC']],
         include: {
             model: Notification,
-            attributes: { exclude: ['createdAt', 'updatedAt', 'agencyId'] },
+            attributes: { exclude: ['updatedAt', 'agencyId'] },
             include: {
                 model: Agency,
                 attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
