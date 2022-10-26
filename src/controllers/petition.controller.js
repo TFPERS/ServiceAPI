@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
 const FileDb = db.file
-
+const path = require('path')
 
 exports.petitionForm = async (req, res) => {
     try {
@@ -204,7 +204,7 @@ exports.petitionByStudentId = async (req, res) => {
 
 exports.downloadRO01 = async (req, res) => {
     try {
-      res.download('../ServiceAPI/Files/RO-01.pdf', (err) => {
+      res.download(path.resolve('Files', 'RO-01.pdf'), (err) => {
         if(err) {
             console.log(err)
         }
@@ -215,7 +215,7 @@ exports.downloadRO01 = async (req, res) => {
 }
 exports.downloadRO03 = async (req, res) => {
     try {
-      res.download('../ServiceAPI/Files/RO-03.pdf', (err) => {
+      res.download(path.resolve('Files', 'RO-03.pdf'), (err) => {
         if(err) {
             console.log(err)
         }
