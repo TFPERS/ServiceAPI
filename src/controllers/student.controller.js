@@ -30,7 +30,7 @@ exports.signinGoogle = async (req,res) => {
             accessToken: token
         })
     } catch (error) {
-        res.status(500).send({ message: error.message })
+        res.status(500).send({ message: error })
     }
 }
 

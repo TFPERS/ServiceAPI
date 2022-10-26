@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 
 
 db.sequelize.sync({
-    force: true,
+    // force: true,
 });
 app.use(morgan("dev"))
 // global error handler
