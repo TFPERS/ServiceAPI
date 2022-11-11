@@ -30,5 +30,7 @@ services:
       - "5000:5000"
     networks:
       - api_service
+    volumes:
+      - ./serviceapi/uploads/:/uploads/
 volumes:
   tfpersDatabase:

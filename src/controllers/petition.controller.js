@@ -81,7 +81,7 @@ exports.petitionPaginate = async (req, res) => {
         const petition = await Petition.findAndCountAll({
             include: [{
                 model: Student,
-                attributes: { exclude: 'password' }
+                attributes: { exclude: 'password' },
             }, {
                 model: Agency
             },{
@@ -123,6 +123,94 @@ exports.petitionPaginate = async (req, res) => {
                 ]
             },  
         })
+        return res.status(200).send({
+            content: petition.rows,
+            totalPages: Math.ceil(petition.count / size)
+        })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.petitionAll = async (req, res) => {
+    try {
+        const allPetition = await Petition.findAll({ 
+                include: [{
+                    model: Student,
+                    attributes: { exclude: 'password' }
+                }, {
+                    model: Agency
+                }],
+                attributes: { exclude: ['studentId', 'agencyId'] }
+            },
+        )
+        return res.status(200).send(allPetition)
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.petitionTest = async (req, res) => {
+    try {
+        const pageAsNumber = Number.parseInt(req.query.page)
+        const sizeAsNumber = Number.parseInt(req.query.size)
+        const search = req.query.search
+
+        let page = 0;
+        if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+            page = pageAsNumber
+        }
+        let size = 10
+        if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+            size = sizeAsNumber
+        }
+        
+        const petition = await Petition.findAndCountAll({
+            include: [{
+                model: Student,
+                attributes: { exclude: 'password' }, 
+            }, {
+                model: Agency
+            },{
+                model: FileDb
+            }],
+            attributes: { exclude: ['studentId', 'agencyId'] },
+            limit: size,
+            offset: page * size,
+            where: {
+                [Op.or]: [
+                    {
+                        id: {
+                            [Op.like]: `${Number.parseInt(search)}`
+                        }
+                    }, 
+                    {
+                        type: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        studentId: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        status: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        term: {
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    // {
+                    //     createdAt: search
+                    // }
+                ]
+            },  
+        })
+        console.log(petition.rows)
         return res.status(200).send({
             content: petition.rows,
             totalPages: Math.ceil(petition.count / size)
