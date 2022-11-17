@@ -13,7 +13,7 @@ exports.notificationEachStudent = async (req, res) => {
         order: [['createdAt', 'DESC']],
         include: {
             model: Notification,
-            attributes: { exclude: ['updatedAt', 'agencyId'] },
+            attributes: { exclude: [ 'updatedAt', 'agencyId'] },
             include: {
                 model: Agency,
                 attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
@@ -98,5 +98,68 @@ exports.allNotificationForAgency = async (req, res) => {
         res.status(200).send(agencyNoti)
     } catch (err) {
         res.status(500).send({ message: err.message })
+    }
+}
+
+exports.NotiPaginate = async (req,res) => {
+    try {
+        const pageAsNumber = Number.parseInt(req.query.page)
+        const sizeAsNumber = Number.parseInt(req.query.size)
+        const search = req.query.search
+        let page = 0;
+        if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+            page = pageAsNumber
+        }
+        let size = 10
+        if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+            size = sizeAsNumber
+        }
+
+        const noti = await Notification.findAndCountAll({
+            include: {
+                model: Agency,
+                attributes: { exclude: ['password']}
+            },
+            order: [['createdAt', 'DESC']],
+            limit: size,
+            offset: page * size,
+        })
+        return res.status(200).send({
+            content: noti.rows,
+            totalPages: Math.ceil(noti.count / size)
+        })
+    } catch (err) {
+        
+    }
+}
+
+exports.deleteNotiById = async (req,res) => {
+    try {
+        const notiId = req.params.notiId
+        Notification.destroy({
+            where: {
+                id: notiId
+            }
+        })
+        return res.status(200).send({ meesage: 'ลบการแจ้งเตือนนี้เรียบร้อย'})
+    } catch (err) {
+        return res.status(500).send({ message: err.message })
+    }
+}
+
+exports.updateDescript = async (req, res) => {
+    try {
+        const notiId = Number.parseInt(req.params.notiId)
+        const descript = req.body.descript
+        console.log(descript)
+        Notification.update(
+            {
+                description: descript
+            },
+            { where: {id: notiId} }
+        )
+        return res.status(200).send({message: 'แก้ไขการแจ้งเตือนเรียบร้อย' })
+    } catch (error) {
+        return res.status(500).send({message: error.message})
     }
 }
