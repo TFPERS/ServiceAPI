@@ -27,7 +27,6 @@ exports.petitionForm = async (req, res) => {
 }
 
 exports.petitionUpdate = async (req, res) => {
-    console.log(req.body.note)
     try {
         const petitionId = Number.parseInt(req.params.id)
         const status = req.body.status
@@ -334,6 +333,44 @@ exports.waiverfee = async (req,res) => {
         }
     res.send({ message: "add was registered successfully!" })
     } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+exports.updateWaiverfee = async (req, res) => {
+    try {
+        const petitionId = Number.parseInt(req.params.petitionId)
+        for(let i = 0; i < req.files.length; i++) {
+            const originalName = req.files[i].originalname
+            FileDb.create({
+                name: req.files[i].filename,
+                originalName: originalName.split(" ").join(""),
+                petitionId: petitionId
+            })
+        }
+        res.send({ message: "อัพเดตข้อมูลเรียบร้อย" })
+    } catch (error) {
+        res.status(500).send({message: error.message})
+    }
+}
+
+exports.getPetitionById = async (req, res) => {
+    try {
+        const petitionId = Number.parseInt(req.params.id)
+        const studentId = req.params.studentId
+        const petition = await Petition.findOne(
+            {
+                include: [{
+                    model: Agency
+                }, {
+                    model: FileDb
+                }],
+                where: {id: petitionId, studentId: studentId}
+            }
+            )
+        if (!petition) return res.status(404).send({message: 'ไม่มีข้อมูลในระบบ'})
+        res.status(200).send({ message: "พบข้อมูลแล้ว", petition:petition})
+    } catch (error) {
         res.status(500).send({ message: err.message })
     }
 }
