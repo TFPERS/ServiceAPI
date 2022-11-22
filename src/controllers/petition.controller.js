@@ -44,6 +44,25 @@ exports.petitionUpdate = async (req, res) => {
     }
 }
 
+exports.petitionUpdateDescription = async (req, res) => {
+    try {
+        const petitionId = Number.parseInt(req.params.id)
+        const status = req.body.status
+        const description = req.body.description
+        console.log(description)
+        Petition.update(
+            { 
+              status: status,
+              description: description
+            },
+            { where: {id: petitionId } }
+        )
+        res.status(200).send({ message: 'Update Status Petition Success' })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
 exports.petitionAll = async (req, res) => {
     try {
         const allPetition = await Petition.findAll({ 

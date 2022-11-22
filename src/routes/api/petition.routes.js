@@ -7,6 +7,7 @@ const router = express.Router()
 
 router.post('/form', controller.petitionForm)
 router.put('/update/:id', controller.petitionUpdate)
+router.put('/update/description/:id', controller.petitionUpdateDescription)
 router.get('/', controller.petitionAll)
 router.get('/paginate', controller.petitionPaginate)
 router.get('/paginateTest', controller.petitionTest)
