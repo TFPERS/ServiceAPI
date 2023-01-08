@@ -17,7 +17,7 @@ exports.uploadStorage = multer({ storage: storage })
 
 const updateStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `./uploads`)
+        cb(null, `./uploads`);
     },
     filename: async (req, file, cb) => {
         const { fileList, oldFiles } = JSON.parse(req.body.data)
