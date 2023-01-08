@@ -9,11 +9,11 @@ services:
     container_name: db
     restart: on-failure
     environment:
-      MYSQL_DATABASE=my_db_name
-      MYSQL_USER=user
-      MYSQL_PASSWORD=pass
-      MYSQL_ROOT_PASSWORD=pass
-      MYSQL_PORT=3306
+      - MYSQL_DATABASE=my_db_name
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_PORT=3306
     # env_file:
     #   - ./.env.develop
     networks:
