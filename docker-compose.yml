@@ -8,8 +8,11 @@ services:
     image: mysql/mysql-server:8.0.24
     container_name: db
     restart: on-failure
-    env_file:
-      - ./.env.develop
+    environment:
+      - MYSQL_ROOT_PASSWORD=banana
+      - MYSQL_DATABASE=mydbapp
+    # env_file:
+    #   - ./.env.develop
     networks:
       - api_service
     ports:
