@@ -5,7 +5,7 @@ networks:
 
 services:
   db:
-    image: mysql:latest
+    image: mysql/mysql-server:latest
     container_name: db
     restart: on-failure
     environment:
@@ -13,15 +13,14 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
       - MYSQL_ROOT_PASSWORD=pass
-      - MYSQL_PORT=3306
     # env_file:
     #   - ./.env.develop
     networks:
       - api_service
     ports:
       - "3307:3306"
-    # volumes:
-    #   - tfpersDatabase:/var/lib/mysql
+    volumes:
+      - tfpersDatabase:/var/lib/mysql
 
   tfpers-api:
     # build: .
