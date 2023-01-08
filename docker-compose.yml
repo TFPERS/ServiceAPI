@@ -10,9 +10,8 @@ services:
     restart: on-failure
     environment:
       - MYSQL_DATABASE=my_db_name
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pass
-      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
     # env_file:
     #   - ./.env.develop
     networks:
